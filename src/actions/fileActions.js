@@ -27,5 +27,10 @@ export const actions = {
       return {
           type: types.CALCULATE_INTEREST
       };
-  }
+  },
+  calculateCollateral() {
+    return {
+        type: types.CALCULATE_COLLATERAL
+    };
+}
 };

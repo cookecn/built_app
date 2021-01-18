@@ -11,11 +11,13 @@ class FileView extends Component {
   colDefs = [
     { field: "id", checkboxSelection: true, filter: "agNumberColumnFilter" },
     { field: "file", filter: "agTextColumnFilter" },
+    { field: "budget", filter: "agNumberColumnFilter" },
     { field: "value", filter: "agNumberColumnFilter" },
     { field: "time", filter: "agNumberColumnFilter" },
     { field: "rate", filter: "agNumberColumnFilter" },
     { field: "monthly", filter: "agNumberColumnFilter" },
     { field: "interest", filter: "agNumberColumnFilter" },
+    { field: "collateral", filter: "agNumberColumnFilter" },
   ];
   defaultColDef = { sortable: true };
 
@@ -49,6 +51,10 @@ class FileView extends Component {
   calculateInterest = () => {
       this.props.actions.calculateInterest();
   }
+  
+  calculateCollateral = () => {
+    this.props.actions.calculateCollateral();
+  }
 
   render() {
     return (
@@ -58,6 +64,7 @@ class FileView extends Component {
         <button onClick={() => this.newFile()}>Add File</button>
         <button onClick={() => this.deleteFiles()}>Delete Files</button>
         <button onClick={() => this.calculateInterest()}>Calculate Interest</button>
+        <button onClick={() => this.calculateCollateral()}>Calculate Collateral</button>
         <AgGridReact
           rowData={this.props.files}
           deltaRowMode={true}

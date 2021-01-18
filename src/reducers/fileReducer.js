@@ -24,18 +24,23 @@ export default function fileReducer(state = {}, action) {
       return {
         files: calculateInterest(state.files),
       };
+      case types.CALCULATE_COLLATERAL:
+      return {
+        files: calculateCollateral(state.files),
+      };
     default:
       return state;
   }
 }
 
-//Create a new file with random value and interest
+//Create a new file with random value, time, and interest (same budget and monthly)
 const newFile = (existingFiles) => {
   const num = getNextUntitledFileNumber(existingFiles);
   let lastId = existingFiles[existingFiles.length - 1].id;
   return {
     id: lastId + 1,
     file: `Loan ${num > 0 ? num : ""}`,
+    budget: 100000,
     value: Math.floor(Math.random() * 100),
     time: Math.floor(Math.random() * 100),
     rate: (Math.floor(Math.random() * 1) + 100) / 100,
@@ -44,7 +49,7 @@ const newFile = (existingFiles) => {
   };
 };
 
-//create new loans starting with "New_Loan" and ending with a number increment by 1.
+//create new loans starting with "Loan" and ending with a number increment by 1.
 const getNextUntitledFileNumber = (existingFiles) => {
   const untitledNumberMapper = (f) => {
     const num = f.file.split(".")[0].match(/\d+/g);
@@ -93,6 +98,13 @@ const calculateInterest = (existingFiles) => existingFiles.map(function(file) {
         ...file,
         interest: file.value * (Math.pow((1 + ( file.rate / file.monthly)), (file.monthly * file.time))) - file.value,
     }
+})
+
+const calculateCollateral = (exisitingFiles) => exisitingFiles.map(function(file) {
+  return {
+    ...file,
+    collateral: file.value * .20,
+  }
 })
 
 /*
